@@ -1,0 +1,11 @@
+web:
+  expose:
+    - "8009"
+  image: paritosh/routeplanner:v1
+httpd:
+  volumes:
+    - /home/mmt5898/RoutePlanner/logs:/var/log/apache2
+  ports:
+    - 80
+  image: paritosh/apache-httpd:0.2
+  container_name: http_proxy
