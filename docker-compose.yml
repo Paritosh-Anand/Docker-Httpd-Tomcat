@@ -6,7 +6,7 @@ services:
     build: tomcat/.
   httpd:
     volumes:
-      - /Users/paritoshanand/Documents/projects/Docker-Httpd-Tomcat/logs:/var/log/apache2
+      - ./logs:/var/log/apache2
     ports:
       - 80
     build: httpd/.
