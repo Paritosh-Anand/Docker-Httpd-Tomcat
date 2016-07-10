@@ -1,4 +1,4 @@
-## Docker: Apache Web & Application server
+## Apache Web & Application Server on Docker
 
 ### How things work currently
 Most of the application that are built with on-premise datacenter ideology have a setup which involves Apache Tomcat as an application server where the web application is deployed. Along with this there is an Apache HTTPD web server that redirects requests landing on port 80 to the application server which is running on port 8080.
