@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Docker-httpd-tomcat by Paritosh-Anand</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Docker-httpd-tomcat</h1>
+        <p class="header">Apache HTTPD with MOD-JK and Apache Tomcat on Docker</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/Paritosh-Anand/Docker-Httpd-Tomcat/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/Paritosh-Anand/Docker-Httpd-Tomcat/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/Paritosh-Anand/Docker-Httpd-Tomcat">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/Paritosh-Anand">Paritosh-Anand</a></p>
+
+
+      </header>
+      <section>
+        <h2>
+<a id="docker-apache-web--application-server" class="anchor" href="#docker-apache-web--application-server" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Docker: Apache Web &amp; Application server</h2>
+
+<h3>
+<a id="how-things-work-currently" class="anchor" href="#how-things-work-currently" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How things work currently</h3>
+
+<p>Most of the application that are built with on-premise datacenter ideology have a setup which involves Apache Tomcat as an application server where the web application is deployed. Along with this there is an Apache HTTPD web server that redirects requests landing on port 80 to the application server which is running on port 8080.</p>
+
+<p>Prime benefits for using HTTPD as web server rather than utilising Tomcat web server capabilities:</p>
+
+<ul>
+<li>Better clutering for handling failures of Tomcat instances.</li>
+<li>Better perfromance of HTTPD in serving static content.</li>
+<li>Security point of view.</li>
+</ul>
+
+<h3>
+<a id="in-terms-of-docker" class="anchor" href="#in-terms-of-docker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>In Terms of Docker</h3>
+
+<p>Talking in terms of Docker: the very best practise is to run one-container per service that is run one container for web server and another for application server. This is little different from a setup that has a VM machine which in which we are running both web server and application server. We configure web server using mod_jk that enables us to redirect our traffic to the application server and life goes on like this.</p>
+
+<p>Apache HTTPD with mod_jk provides load balancing features that can help in load balancing request on multiple backends. Though we have a single backend in most of the cases that is our Apache Tomcat.</p>
+
+<p>While docker-ising a web application mod_jk configurations are very crucial to setup an environment such that web server and application server in two different containers. Also by using mod_jk we can create a setup which have a single container that is running web server and multiple containers running application servers accepting requests from a single web server. This web server is also responsible for load balancing and stuff.</p>
+
+<p>Make clone of this project and run below command. </p>
+
+<pre><code>$ docker-compose up -d
+</code></pre>
+
+<p>This will start invoke two Docker containers </p>
+
+<ul>
+<li>An Apache Tomcat container that will host a sample web application.</li>
+<li>An Apache HTTPD container that will run the httpd web server with mod_jk configuration. </li>
+</ul>
+
+<p>Mod_jk configurations will be pointing the backend to the tomcat container which will have it's AJP connector port exposed. As per Docker compose version 2 by default every container is reachable via other containers, hence the backend host i.e. Apache Tomcat will be already reachable from HTTPD. </p>
+
+<p>Apache HTTPD's port 80 will be mapped to base machine's port via which the user requests will land on our web server. Run below command to find out the base machine's port:</p>
+
+<pre><code>$ docker-compose ps
+          Name                         Command               State               Ports
+---------------------------------------------------------------------------------------------------
+dockerhttpdtomcat_httpd_1   apachectl -k start -DFOREG ...   Up      443/tcp, 0.0.0.0:32776-&gt;80/tcp
+dockerhttpdtomcat_web_1     catalina.sh run                  Up      8009/tcp, 8080/tcp
+</code></pre>
+
+<p>Do note: don't make hard-mappings of HTTPD's container port to base machine. It will kill the possiblities of scaling  any of the services.</p>
+
+<p>Test the setup from browser on http://localhost:<em>mapped_httpd_port</em>. It will open Apache Tomcat's welcome page. URL in this case would be:</p>
+
+<pre><code>http://localhost:32776/
+</code></pre>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
