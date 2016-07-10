@@ -31,7 +31,7 @@
       </header>
       <section>
         <h2>
-<a id="docker-apache-web--application-server" class="anchor" href="#docker-apache-web--application-server" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Docker: Apache Web &amp; Application server</h2>
+<a id="apache-web--application-server-on-docker" class="anchor" href="#apache-web--application-server-on-docker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Apache Web &amp; Application Server on Docker</h2>
 
 <h3>
 <a id="how-things-work-currently" class="anchor" href="#how-things-work-currently" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How things work currently</h3>
@@ -49,18 +49,21 @@
 <h3>
 <a id="in-terms-of-docker" class="anchor" href="#in-terms-of-docker" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>In Terms of Docker</h3>
 
-<p>Talking in terms of Docker: the very best practise is to run one-container per service that is run one container for web server and another for application server. This is little different from a setup that has a VM machine which in which we are running both web server and application server. We configure web server using mod_jk that enables us to redirect our traffic to the application server and life goes on like this.</p>
+<p>Talking in terms of Docker: the very best practise is to run one-container-per-service that is run one container for web server and another for application server. This is little different from a setup that has a VM machine which in which we are running both web server and application server. We configure web server using mod_jk that enables us to redirect our traffic to the application server.</p>
 
 <p>Apache HTTPD with mod_jk provides load balancing features that can help in load balancing request on multiple backends. Though we have a single backend in most of the cases that is our Apache Tomcat.</p>
 
-<p>While docker-ising a web application mod_jk configurations are very crucial to setup an environment such that web server and application server in two different containers. Also by using mod_jk we can create a setup which have a single container that is running web server and multiple containers running application servers accepting requests from a single web server. This web server is also responsible for load balancing and stuff.</p>
+<p>While docker-ising a web application mod_jk configurations are very crucial to setup an environment such that web server and application server in two different containers. Also by using mod_jk we can create a setup which have a single container that is running web server and multiple containers running application servers accepting requests from a single web server. This web server is also responsible for load balancing among application servers.</p>
 
 <p>Make clone of this project and run below command. </p>
+
+<pre><code>git clone https://github.com/Paritosh-Anand/Docker-Httpd-Tomcat.git
+</code></pre>
 
 <pre><code>$ docker-compose up -d
 </code></pre>
 
-<p>This will start invoke two Docker containers </p>
+<p>This will invoke two Docker containers </p>
 
 <ul>
 <li>An Apache Tomcat container that will host a sample web application.</li>
@@ -78,7 +81,7 @@ dockerhttpdtomcat_httpd_1   apachectl -k start -DFOREG ...   Up      443/tcp, 0.
 dockerhttpdtomcat_web_1     catalina.sh run                  Up      8009/tcp, 8080/tcp
 </code></pre>
 
-<p>Do note: don't make hard-mappings of HTTPD's container port to base machine. It will kill the possiblities of scaling  any of the services.</p>
+<p>Do note: don't make hard-mappings of HTTPD's container port to base machine. It will kill the possiblities of scaling any of the services.</p>
 
 <p>Test the setup from browser on http://localhost:<em>mapped_httpd_port</em>. It will open Apache Tomcat's welcome page. URL in this case would be:</p>
 
