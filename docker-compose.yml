@@ -1,12 +1,17 @@
 version: '2'
 services:
-  web:
+  tomcat:
     expose:
       - "8009"
+    ports:
+      - 8080:8080
     build: tomcat/.
   httpd:
     volumes:
       - ./logs:/var/log/apache2
     ports:
-      - 80
+      - 8000:80
     build: httpd/.
+    links:
+      - tomcat
+
