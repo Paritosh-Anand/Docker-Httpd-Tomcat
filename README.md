@@ -40,7 +40,8 @@ dockerhttpdtomcat_web_1     catalina.sh run                  Up      8009/tcp, 8
 
 Do note: don't make hard-mappings of HTTPD's container port to base machine. It will kill the possiblities of scaling any of the services.
 
-Test the setup from browser on http://localhost:*mapped_httpd_port*. It will open Apache Tomcat's welcome page. URL in this case would be:
+Test the setup from browser on http://localhost:*mapped_httpd_port*. 
 ```
-http://localhost:32776/
+http://localhost:32776/ -- Apache HTTP default page
+http://localhost:32776/sample/ -- Sample web app from Apache Tomcat
 ```
