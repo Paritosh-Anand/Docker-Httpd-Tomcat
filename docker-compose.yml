@@ -1,6 +1,6 @@
 version: '2'
 services:
-  web:
+  tomcat:
     expose:
       - "8009"
     build: tomcat/.
@@ -10,3 +10,4 @@ services:
     ports:
       - 80
     build: httpd/.
+
