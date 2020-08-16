@@ -3,15 +3,11 @@ services:
   tomcat:
     expose:
       - "8009"
-    ports:
-      - 8080:8080
     build: tomcat/.
   httpd:
     volumes:
       - ./logs:/var/log/apache2
     ports:
-      - 8000:80
+      - 80
     build: httpd/.
-    links:
-      - tomcat
 
